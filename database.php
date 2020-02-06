@@ -1,10 +1,10 @@
 <?php
 class Database
 {
-    private static $dbName = 'phpmyadmin' ;
-    private static $dbHost = 'localhost';
-    private static $dbUsername = 'phpmyadmin';
-    private static $dbUserPassword = '1003071!Hunt';
+    private static $dbName = 'Your DB Name';
+    private static $dbHost = 'Your DB Server';
+    private static $dbUsername = 'Your DB Username';
+    private static $dbUserPassword = 'Your DB Password';
      
     private static $cont  = null;
      
