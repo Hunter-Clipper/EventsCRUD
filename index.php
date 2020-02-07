@@ -9,7 +9,7 @@
 <body>
     <div class="container">
             <div class="row">
-                <h3>Events</h3>
+                <h3>Customers</h3>
             </div>
             <div class="row">
 				<p>
@@ -18,9 +18,9 @@
                 <table class="table table-striped table-bordered">
                   <thead>
                     <tr>
-                      <th>Event</th>
-                      <th>Date</th>
-                      <th>Time</th>
+                      <th>Name</th>
+                      <th>Email Address</th>
+                      <th>Mobile Number</th>
 					  <th>Action</th>
                     </tr>
                   </thead>
@@ -28,12 +28,12 @@
                   <?php
                    include 'database.php';
                    $pdo = Database::connect();
-                   $sql = 'SELECT * FROM events ORDER BY id DESC';
+                   $sql = 'SELECT * FROM customers ORDER BY id DESC';
                    foreach ($pdo->query($sql) as $row) {
                             echo '<tr>';
-                            echo '<td>'. $row['event'] . '</td>';
-                            echo '<td>'. $row['date'] . '</td>';
-                            echo '<td>'. $row['time'] . '</td>';
+                            echo '<td>'. $row['name'] . '</td>';
+                            echo '<td>'. $row['email'] . '</td>';
+                            echo '<td>'. $row['mobile'] . '</td>';
 							echo '<td width=250>';
 							echo '<a class="btn" href="read.php?id='.$row['id'].'">Read</a>';
 							echo ' ';

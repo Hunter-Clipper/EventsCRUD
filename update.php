@@ -12,29 +12,32 @@
      
     if ( !empty($_POST)) {
         // keep track validation errors
-        $eventError = null;
-        $dateError = null;
-        $timeError = null;
+        $nameError = null;
+        $emailError = null;
+        $mobileError = null;
          
         // keep track post values
-        $event = $_POST['event'];
-        $date = $_POST['date'];
-        $time = $_POST['time'];
+        $name = $_POST['name'];
+        $email = $_POST['email'];
+        $mobile = $_POST['mobile'];
          
         // validate input
         $valid = true;
-        if (empty($event)) {
-            $eventError = 'Please enter event name';
+        if (empty($name)) {
+            $nameError = 'Please enter Name';
             $valid = false;
         }
          
-        if (empty($date)) {
-            $dateError = 'Please enter event date';
+        if (empty($email)) {
+            $emailError = 'Please enter Email Address';
+            $valid = false;
+        } else if ( !filter_var($email,FILTER_VALIDATE_EMAIL) ) {
+            $emailError = 'Please enter a valid Email Address';
             $valid = false;
         }
          
-        if (empty($time)) {
-            $timeError = 'Please enter event time';
+        if (empty($mobile)) {
+            $mobileError = 'Please enter Mobile Number';
             $valid = false;
         }
          
@@ -42,22 +45,22 @@
         if ($valid) {
             $pdo = Database::connect();
             $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            $sql = "UPDATE events  set event = ?, date = ?, time = ? WHERE id = ?";
+            $sql = "UPDATE customers  set name = ?, email = ?, mobile =? WHERE id = ?";
             $q = $pdo->prepare($sql);
-            $q->execute(array($event,$date,$time,$id));
+            $q->execute(array($name,$email,$mobile,$id));
             Database::disconnect();
             header("Location: index.php");
         }
     } else {
         $pdo = Database::connect();
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        $sql = "SELECT * FROM events where id = ?";
+        $sql = "SELECT * FROM customers where id = ?";
         $q = $pdo->prepare($sql);
         $q->execute(array($id));
         $data = $q->fetch(PDO::FETCH_ASSOC);
-        $event = $data['event'];
-        $date = $data['date'];
-        $time = $data['time'];
+        $name = $data['name'];
+        $email = $data['email'];
+        $mobile = $data['mobile'];
         Database::disconnect();
     }
 ?>
@@ -75,34 +78,34 @@
      
                 <div class="span10 offset1">
                     <div class="row">
-                        <h3>Update an Event</h3>
+                        <h3>Update a Customer</h3>
                     </div>
              
                     <form class="form-horizontal" action="update.php?id=<?php echo $id?>" method="post">
-                      <div class="control-group <?php echo !empty($eventError)?'error':'';?>">
-                        <label class="control-label">Event Name</label>
+                      <div class="control-group <?php echo !empty($nameError)?'error':'';?>">
+                        <label class="control-label">Name</label>
                         <div class="controls">
-                            <input name="event" type="text"  placeholder="Event" value="<?php echo !empty($event)?$event:'';?>">
-                            <?php if (!empty($eventError)): ?>
-                                <span class="help-inline"><?php echo $eventError;?></span>
+                            <input name="name" type="text"  placeholder="Name" value="<?php echo !empty($name)?$name:'';?>">
+                            <?php if (!empty($nameError)): ?>
+                                <span class="help-inline"><?php echo $nameError;?></span>
                             <?php endif; ?>
                         </div>
                       </div>
-                      <div class="control-group <?php echo !empty($dateError)?'error':'';?>">
-                        <label class="control-label">Event Date</label>
+                      <div class="control-group <?php echo !empty($emailError)?'error':'';?>">
+                        <label class="control-label">Email Address</label>
                         <div class="controls">
-                            <input name="date" type="text" placeholder="1/1/2020" value="<?php echo !empty($date)?$date:'';?>">
-                            <?php if (!empty($dateError)): ?>
-                                <span class="help-inline"><?php echo $dateError;?></span>
+                            <input name="email" type="text" placeholder="Email Address" value="<?php echo !empty($email)?$email:'';?>">
+                            <?php if (!empty($emailError)): ?>
+                                <span class="help-inline"><?php echo $emailError;?></span>
                             <?php endif;?>
                         </div>
                       </div>
-                      <div class="control-group <?php echo !empty($timeError)?'error':'';?>">
-                        <label class="control-label">Event Time</label>
+                      <div class="control-group <?php echo !empty($mobileError)?'error':'';?>">
+                        <label class="control-label">Mobile Number</label>
                         <div class="controls">
-                            <input name="time" type="text"  placeholder="6:00PM" value="<?php echo !empty($time)?$time:'';?>">
-                            <?php if (!empty($timeError)): ?>
-                                <span class="help-inline"><?php echo $timeError;?></span>
+                            <input name="mobile" type="text"  placeholder="Mobile Number" value="<?php echo !empty($mobile)?$mobile:'';?>">
+                            <?php if (!empty($mobileError)): ?>
+                                <span class="help-inline"><?php echo $mobileError;?></span>
                             <?php endif;?>
                         </div>
                       </div>
